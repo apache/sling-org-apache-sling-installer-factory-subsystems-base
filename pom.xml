@@ -39,9 +39,9 @@
     </properties>
 
     <scm>
-        <connection>scm:svn:http://svn.apache.org/repos/asf/sling/trunk/installer/factories/subsystems-base</connection>
+        <connection>scm:git:https://gitbox.apache.org/repos/asf/sling-org-apache-sling-installer-factory-subsystems-base.git</conncetion>
         <developerConnection> scm:svn:https://svn.apache.org/repos/asf/sling/trunk/installer/factories/subsystems-base</developerConnection>
-        <url>http://svn.apache.org/viewvc/sling/trunk/installer/factories/subsystems-base/</url>
+        <url>https://gitbox.apache.org/repos/asf?p=sling-org-apache-sling-installer-factory-subsystems-base.git.git</url>
     </scm>
 
     <build>
