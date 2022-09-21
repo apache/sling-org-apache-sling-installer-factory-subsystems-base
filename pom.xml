@@ -44,6 +44,20 @@
         <url>https://gitbox.apache.org/repos/asf?p=sling-org-apache-sling-installer-factory-subsystems-base.git</url>
     </scm>
 
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.rat</groupId>
+                <artifactId>apache-rat-plugin</artifactId>
+                <configuration>
+                    <excludes>
+                        <exclude>src/test/resources/*-base</exclude>
+                    </excludes>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
     <dependencies>
         <dependency>
             <groupId>org.slf4j</groupId>
