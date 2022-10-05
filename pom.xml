@@ -20,14 +20,13 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>org.apache.sling</groupId>
-        <artifactId>sling</artifactId>
-        <version>26</version>
+        <artifactId>sling-bundle-parent</artifactId>
+        <version>49</version>
         <relativePath/>
     </parent>
 
     <artifactId>org.apache.sling.installer.factory.subsystems-base</artifactId>
     <version>1.0.0-SNAPSHOT</version>
-    <packaging>bundle</packaging>
 
     <name>Apache Sling Subsystems Base Installer</name>
     <description> 
@@ -35,7 +34,8 @@
     </description>
 
     <properties>
-        <sling.java.version>7</sling.java.version>
+        <sling.java.version>8</sling.java.version>
+        <bnd.baseline.fail.on.missing>false</bnd.baseline.fail.on.missing>
     </properties>
 
     <scm>
@@ -47,27 +47,12 @@
     <build>
         <plugins>
             <plugin>
-                <groupId>org.apache.felix</groupId>
-                <artifactId>maven-bundle-plugin</artifactId>
-                <extensions>true</extensions>
-                <configuration>
-                    <instructions>
-                        <Bundle-Activator>
-                            org.apache.sling.installer.factories.subsystems.base.impl.Activator
-                        </Bundle-Activator>
-                        <Private-Package>
-                            org.apache.sling.installer.factories.subsystems.base.impl.*
-                        </Private-Package>
-                    </instructions>
-                </configuration>
-            </plugin>
-            <plugin>
                 <groupId>org.apache.rat</groupId>
                 <artifactId>apache-rat-plugin</artifactId>
                 <configuration>
-                   <excludes>
+                    <excludes>
                         <exclude>src/test/resources/*-base</exclude>
-                   </excludes>
+                    </excludes>
                 </configuration>
             </plugin>
         </plugins>
@@ -77,16 +62,22 @@
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>org.osgi</groupId>
-            <artifactId>org.osgi.core</artifactId>
-            <version>5.0.0</version>
+            <artifactId>osgi.core</artifactId>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>org.osgi</groupId>
-            <artifactId>org.osgi.compendium</artifactId>
-            <version>5.0.0</version>
+            <artifactId>org.osgi.annotation.bundle</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.osgi</groupId>
+            <artifactId>org.osgi.service.subsystem</artifactId>
+            <version>1.1.0</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
@@ -108,8 +99,8 @@
         </dependency>
         <dependency>
             <groupId>org.mockito</groupId>
-            <artifactId>mockito-all</artifactId>
-            <version>1.10.19</version>
+            <artifactId>mockito-core</artifactId>
+            <version>4.5.1</version>
             <scope>test</scope>
         </dependency>
         <dependency>

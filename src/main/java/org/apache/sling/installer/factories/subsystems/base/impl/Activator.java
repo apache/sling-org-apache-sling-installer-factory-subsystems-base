@@ -30,6 +30,9 @@ import org.osgi.framework.ServiceReference;
 import org.osgi.framework.ServiceRegistration;
 import org.osgi.util.tracker.ServiceTracker;
 
+import org.osgi.annotation.bundle.Header;
+
+@Header(name = Constants.BUNDLE_ACTIVATOR, value = "${@class}")
 public class Activator implements BundleActivator {
     private ServiceTracker<SlingSettingsService, SlingSettingsService> slingSettingsTracker;
 
