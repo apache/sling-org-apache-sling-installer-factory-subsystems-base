@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <!--
  Licensed to the Apache Software Foundation (ASF) under one
  or more contributor license agreements.  See the NOTICE file
@@ -21,22 +22,15 @@
     <parent>
         <groupId>org.apache.sling</groupId>
         <artifactId>sling-bundle-parent</artifactId>
-        <version>49</version>
-        <relativePath/>
+        <version>66</version>
+        <relativePath />
     </parent>
 
     <artifactId>org.apache.sling.installer.factory.subsystems-base</artifactId>
     <version>1.0.0-SNAPSHOT</version>
 
     <name>Apache Sling Subsystems Base Installer</name>
-    <description> 
-        Provides support for subsystems-base files to the Apache Sling OSGi installer
-    </description>
-
-    <properties>
-        <sling.java.version>8</sling.java.version>
-        <bnd.baseline.fail.on.missing>false</bnd.baseline.fail.on.missing>
-    </properties>
+    <description>Provides support for subsystems-base files to the Apache Sling OSGi installer</description>
 
     <scm>
         <connection>scm:git:https://gitbox.apache.org/repos/asf/sling-org-apache-sling-installer-factory-subsystems-base.git</connection>
@@ -44,19 +38,10 @@
         <url>https://github.com/apache/sling-org-apache-sling-installer-factory-subsystems-base.git</url>
     </scm>
 
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.apache.rat</groupId>
-                <artifactId>apache-rat-plugin</artifactId>
-                <configuration>
-                    <excludes>
-                        <exclude>src/test/resources/*-base</exclude>
-                    </excludes>
-                </configuration>
-            </plugin>
-        </plugins>
-    </build>
+    <properties>
+        <sling.java.version>8</sling.java.version>
+        <bnd.baseline.fail.on.missing>false</bnd.baseline.fail.on.missing>
+    </properties>
 
     <dependencies>
         <dependency>
@@ -66,7 +51,12 @@
         </dependency>
         <dependency>
             <groupId>org.osgi</groupId>
-            <artifactId>osgi.core</artifactId>
+            <artifactId>org.osgi.framework</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.osgi</groupId>
+            <artifactId>org.osgi.util.tracker</artifactId>
             <scope>provided</scope>
         </dependency>
         <dependency>
@@ -109,4 +99,18 @@
             <scope>test</scope>
         </dependency>
     </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.rat</groupId>
+                <artifactId>apache-rat-plugin</artifactId>
+                <configuration>
+                    <excludes>
+                        <exclude>src/test/resources/*-base</exclude>
+                    </excludes>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 </project>
