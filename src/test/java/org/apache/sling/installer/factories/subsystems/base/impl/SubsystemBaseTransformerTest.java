@@ -63,46 +63,51 @@ public class SubsystemBaseTransformerTest {
 
         Set<String> foundBundles = new HashSet<>();
         try (ZipInputStream zis = new ZipInputStream(dcis);
-             JarFile jf = new JarFile(testArchive.getFile())) {
+                JarFile jf = new JarFile(testArchive.getFile())) {
             ZipEntry ze = null;
-            while((ze = zis.getNextEntry()) != null) {
+            while ((ze = zis.getNextEntry()) != null) {
                 foundBundles.add(ze.getName());
-                switch(ze.getName()) {
-                case "OSGI-INF/SUBSYSTEM.MF":
-                    Manifest mf = new Manifest(zis);
-                    Attributes attrs = mf.getMainAttributes();
-                    assertEquals("test1", attrs.getValue("Subsystem-SymbolicName"));
-                    assertEquals("osgi.subsystem.composite", attrs.getValue("Subsystem-Type"));
-                    assertEquals("(c) 2015 yeah!", attrs.getValue("Subsystem-Copyright"));
-                    assertEquals("Extra subsystem headers can go here including very long ones "
-                            + "that would span multiple lines in a manifest", attrs.getValue("Subsystem-Description"));
-                    assertEquals("org.apache.sling.commons.osgi;version=2.3.0;type=osgi.bundle;start-order:=0,"
-                            + "org.apache.sling.commons.json;version=2.0.12;type=osgi.bundle;start-order:=10,"
-                            + "org.apache.sling.commons.mime;version=2.1.8;type=osgi.bundle;start-order:=10",
-                            attrs.getValue("Subsystem-Content"));
-                    break;
-                case "org.apache.sling.commons.osgi-2.3.0.jar":
-                    ZipEntry oze = jf.getEntry("Potential_Bundles/0/org.apache.sling.commons.osgi-2.3.0.jar");
-                    assertArtifactsEqual(oze.getName(), jf.getInputStream(oze), zis);
-                    break;
-                case "org.apache.sling.commons.json-2.0.12.jar":
-                    ZipEntry jze = jf.getEntry("Potential_Bundles/10/org.apache.sling.commons.json-2.0.12.jar");
-                    assertArtifactsEqual(jze.getName(), jf.getInputStream(jze), zis);
-                    break;
-                case "org.apache.sling.commons.mime-2.1.8.jar":
-                    ZipEntry mze = jf.getEntry("Potential_Bundles/10/org.apache.sling.commons.mime-2.1.8.jar");
-                    assertArtifactsEqual(mze.getName(), jf.getInputStream(mze), zis);
-                    break;
+                switch (ze.getName()) {
+                    case "OSGI-INF/SUBSYSTEM.MF":
+                        Manifest mf = new Manifest(zis);
+                        Attributes attrs = mf.getMainAttributes();
+                        assertEquals("test1", attrs.getValue("Subsystem-SymbolicName"));
+                        assertEquals("osgi.subsystem.composite", attrs.getValue("Subsystem-Type"));
+                        assertEquals("(c) 2015 yeah!", attrs.getValue("Subsystem-Copyright"));
+                        assertEquals(
+                                "Extra subsystem headers can go here including very long ones "
+                                        + "that would span multiple lines in a manifest",
+                                attrs.getValue("Subsystem-Description"));
+                        assertEquals(
+                                "org.apache.sling.commons.osgi;version=2.3.0;type=osgi.bundle;start-order:=0,"
+                                        + "org.apache.sling.commons.json;version=2.0.12;type=osgi.bundle;start-order:=10,"
+                                        + "org.apache.sling.commons.mime;version=2.1.8;type=osgi.bundle;start-order:=10",
+                                attrs.getValue("Subsystem-Content"));
+                        break;
+                    case "org.apache.sling.commons.osgi-2.3.0.jar":
+                        ZipEntry oze = jf.getEntry("Potential_Bundles/0/org.apache.sling.commons.osgi-2.3.0.jar");
+                        assertArtifactsEqual(oze.getName(), jf.getInputStream(oze), zis);
+                        break;
+                    case "org.apache.sling.commons.json-2.0.12.jar":
+                        ZipEntry jze = jf.getEntry("Potential_Bundles/10/org.apache.sling.commons.json-2.0.12.jar");
+                        assertArtifactsEqual(jze.getName(), jf.getInputStream(jze), zis);
+                        break;
+                    case "org.apache.sling.commons.mime-2.1.8.jar":
+                        ZipEntry mze = jf.getEntry("Potential_Bundles/10/org.apache.sling.commons.mime-2.1.8.jar");
+                        assertArtifactsEqual(mze.getName(), jf.getInputStream(mze), zis);
+                        break;
                 }
             }
         }
-        assertEquals(new HashSet<>(Arrays.asList("OSGI-INF/SUBSYSTEM.MF",
-                "org.apache.sling.commons.osgi-2.3.0.jar",
-                "org.apache.sling.commons.json-2.0.12.jar",
-                "org.apache.sling.commons.mime-2.1.8.jar")), foundBundles);
+        assertEquals(
+                new HashSet<>(Arrays.asList(
+                        "OSGI-INF/SUBSYSTEM.MF",
+                        "org.apache.sling.commons.osgi-2.3.0.jar",
+                        "org.apache.sling.commons.json-2.0.12.jar",
+                        "org.apache.sling.commons.mime-2.1.8.jar")),
+                foundBundles);
 
-        assertFalse("After closing the stream the temp file should have been deleted.",
-                dcis.file.exists());
+        assertFalse("After closing the stream the temp file should have been deleted.", dcis.file.exists());
     }
 
     @Test
@@ -123,58 +128,64 @@ public class SubsystemBaseTransformerTest {
 
         Set<String> foundBundles = new HashSet<>();
         try (ZipInputStream zis = new ZipInputStream(dcis);
-             JarFile jf = new JarFile(testArchive.getFile())) {
+                JarFile jf = new JarFile(testArchive.getFile())) {
             ZipEntry ze = null;
-            while((ze = zis.getNextEntry()) != null) {
+            while ((ze = zis.getNextEntry()) != null) {
                 foundBundles.add(ze.getName());
-                switch(ze.getName()) {
-                case "OSGI-INF/SUBSYSTEM.MF":
-                    Manifest mf = new Manifest(zis);
-                    Attributes attrs = mf.getMainAttributes();
-                    assertEquals("test1", attrs.getValue("Subsystem-SymbolicName"));
-                    assertEquals("osgi.subsystem.composite", attrs.getValue("Subsystem-Type"));
-                    assertEquals("(c) 2015 yeah!", attrs.getValue("Subsystem-Copyright"));
-                    assertEquals("Extra subsystem headers can go here including very long ones "
-                            + "that would span multiple lines in a manifest", attrs.getValue("Subsystem-Description"));
-                    assertEquals("org.apache.sling.commons.osgi;version=2.3.0;type=osgi.bundle;start-order:=0,"
-                            + "org.apache.sling.commons.json;version=2.0.12;type=osgi.bundle;start-order:=10,"
-                            + "org.apache.sling.commons.mime;version=2.1.8;type=osgi.bundle;start-order:=10,"
-                            + "org.apache.sling.commons.threads;version=3.2.0;type=osgi.bundle;start-order:=20,"
-                            + "org.apache.sling.commons.contentdetection;version=1.0.2;type=osgi.bundle;start-order:=100",
-                            attrs.getValue("Subsystem-Content"));
-                    break;
-                case "org.apache.sling.commons.osgi-2.3.0.jar":
-                    ZipEntry oze = jf.getEntry("Potential_Bundles/0/org.apache.sling.commons.osgi-2.3.0.jar");
-                    assertArtifactsEqual(oze.getName(), jf.getInputStream(oze), zis);
-                    break;
-                case "org.apache.sling.commons.json-2.0.12.jar":
-                    ZipEntry jze = jf.getEntry("Potential_Bundles/10/org.apache.sling.commons.json-2.0.12.jar");
-                    assertArtifactsEqual(jze.getName(), jf.getInputStream(jze), zis);
-                    break;
-                case "org.apache.sling.commons.mime-2.1.8.jar":
-                    ZipEntry mze = jf.getEntry("Potential_Bundles/10/org.apache.sling.commons.mime-2.1.8.jar");
-                    assertArtifactsEqual(mze.getName(), jf.getInputStream(mze), zis);
-                    break;
-                case "org.apache.sling.commons.threads-3.2.0.jar":
-                    ZipEntry tze = jf.getEntry("Potential_Bundles/20/org.apache.sling.commons.threads-3.2.0.jar");
-                    assertArtifactsEqual(tze.getName(), jf.getInputStream(tze), zis);
-                    break;
-                case "org.apache.sling.commons.contentdetection-1.0.2.jar":
-                    ZipEntry cze = jf.getEntry("Potential_Bundles/100/org.apache.sling.commons.contentdetection-1.0.2.jar");
-                    assertArtifactsEqual(cze.getName(), jf.getInputStream(cze), zis);
-                    break;
+                switch (ze.getName()) {
+                    case "OSGI-INF/SUBSYSTEM.MF":
+                        Manifest mf = new Manifest(zis);
+                        Attributes attrs = mf.getMainAttributes();
+                        assertEquals("test1", attrs.getValue("Subsystem-SymbolicName"));
+                        assertEquals("osgi.subsystem.composite", attrs.getValue("Subsystem-Type"));
+                        assertEquals("(c) 2015 yeah!", attrs.getValue("Subsystem-Copyright"));
+                        assertEquals(
+                                "Extra subsystem headers can go here including very long ones "
+                                        + "that would span multiple lines in a manifest",
+                                attrs.getValue("Subsystem-Description"));
+                        assertEquals(
+                                "org.apache.sling.commons.osgi;version=2.3.0;type=osgi.bundle;start-order:=0,"
+                                        + "org.apache.sling.commons.json;version=2.0.12;type=osgi.bundle;start-order:=10,"
+                                        + "org.apache.sling.commons.mime;version=2.1.8;type=osgi.bundle;start-order:=10,"
+                                        + "org.apache.sling.commons.threads;version=3.2.0;type=osgi.bundle;start-order:=20,"
+                                        + "org.apache.sling.commons.contentdetection;version=1.0.2;type=osgi.bundle;start-order:=100",
+                                attrs.getValue("Subsystem-Content"));
+                        break;
+                    case "org.apache.sling.commons.osgi-2.3.0.jar":
+                        ZipEntry oze = jf.getEntry("Potential_Bundles/0/org.apache.sling.commons.osgi-2.3.0.jar");
+                        assertArtifactsEqual(oze.getName(), jf.getInputStream(oze), zis);
+                        break;
+                    case "org.apache.sling.commons.json-2.0.12.jar":
+                        ZipEntry jze = jf.getEntry("Potential_Bundles/10/org.apache.sling.commons.json-2.0.12.jar");
+                        assertArtifactsEqual(jze.getName(), jf.getInputStream(jze), zis);
+                        break;
+                    case "org.apache.sling.commons.mime-2.1.8.jar":
+                        ZipEntry mze = jf.getEntry("Potential_Bundles/10/org.apache.sling.commons.mime-2.1.8.jar");
+                        assertArtifactsEqual(mze.getName(), jf.getInputStream(mze), zis);
+                        break;
+                    case "org.apache.sling.commons.threads-3.2.0.jar":
+                        ZipEntry tze = jf.getEntry("Potential_Bundles/20/org.apache.sling.commons.threads-3.2.0.jar");
+                        assertArtifactsEqual(tze.getName(), jf.getInputStream(tze), zis);
+                        break;
+                    case "org.apache.sling.commons.contentdetection-1.0.2.jar":
+                        ZipEntry cze = jf.getEntry(
+                                "Potential_Bundles/100/org.apache.sling.commons.contentdetection-1.0.2.jar");
+                        assertArtifactsEqual(cze.getName(), jf.getInputStream(cze), zis);
+                        break;
                 }
             }
         }
-        assertEquals(new HashSet<>(Arrays.asList("OSGI-INF/SUBSYSTEM.MF",
-                "org.apache.sling.commons.osgi-2.3.0.jar",
-                "org.apache.sling.commons.json-2.0.12.jar",
-                "org.apache.sling.commons.mime-2.1.8.jar",
-                "org.apache.sling.commons.threads-3.2.0.jar",
-                "org.apache.sling.commons.contentdetection-1.0.2.jar")), foundBundles);
+        assertEquals(
+                new HashSet<>(Arrays.asList(
+                        "OSGI-INF/SUBSYSTEM.MF",
+                        "org.apache.sling.commons.osgi-2.3.0.jar",
+                        "org.apache.sling.commons.json-2.0.12.jar",
+                        "org.apache.sling.commons.mime-2.1.8.jar",
+                        "org.apache.sling.commons.threads-3.2.0.jar",
+                        "org.apache.sling.commons.contentdetection-1.0.2.jar")),
+                foundBundles);
 
-        assertFalse("After closing the stream the temp file should have been deleted.",
-                dcis.file.exists());
+        assertFalse("After closing the stream the temp file should have been deleted.", dcis.file.exists());
     }
 
     private void assertArtifactsEqual(String name, InputStream is1, InputStream is2) throws IOException {
@@ -202,7 +213,7 @@ public class SubsystemBaseTransformerTest {
         }
     }
 
-    public static byte [] suckStreams(InputStream is) throws IOException {
+    public static byte[] suckStreams(InputStream is) throws IOException {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         pumpStreams(is, baos);
         return baos.toByteArray();

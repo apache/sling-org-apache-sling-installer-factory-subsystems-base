@@ -23,14 +23,13 @@ import java.util.Hashtable;
 
 import org.apache.sling.installer.api.tasks.ResourceTransformer;
 import org.apache.sling.settings.SlingSettingsService;
+import org.osgi.annotation.bundle.Header;
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.Constants;
 import org.osgi.framework.ServiceReference;
 import org.osgi.framework.ServiceRegistration;
 import org.osgi.util.tracker.ServiceTracker;
-
-import org.osgi.annotation.bundle.Header;
 
 @Header(name = Constants.BUNDLE_ACTIVATOR, value = "${@class}")
 public class Activator implements BundleActivator {
@@ -40,21 +39,23 @@ public class Activator implements BundleActivator {
     private ServiceRegistration<?> serviceReg;
 
     public void start(BundleContext context) throws Exception {
-        slingSettingsTracker = new ServiceTracker<SlingSettingsService, SlingSettingsService>(context,
-            SlingSettingsService.class, null) {
-                @Override
-                public SlingSettingsService addingService(ServiceReference<SlingSettingsService> reference) {
-                    SlingSettingsService slingSettings = super.addingService(reference);
-                    registerInstaller(context, slingSettings);
-                    return slingSettings;
-                }
+        slingSettingsTracker =
+                new ServiceTracker<SlingSettingsService, SlingSettingsService>(
+                        context, SlingSettingsService.class, null) {
+                    @Override
+                    public SlingSettingsService addingService(ServiceReference<SlingSettingsService> reference) {
+                        SlingSettingsService slingSettings = super.addingService(reference);
+                        registerInstaller(context, slingSettings);
+                        return slingSettings;
+                    }
 
-                @Override
-                public void removedService(ServiceReference<SlingSettingsService> reference, SlingSettingsService service) {
-                    unregisterInstaller();
-                    super.removedService(reference, service);
-                }
-        };
+                    @Override
+                    public void removedService(
+                            ServiceReference<SlingSettingsService> reference, SlingSettingsService service) {
+                        unregisterInstaller();
+                        super.removedService(reference, service);
+                    }
+                };
         slingSettingsTracker.open();
     }
 
@@ -67,12 +68,12 @@ public class Activator implements BundleActivator {
         final Dictionary<String, Object> props = new Hashtable<String, Object>();
         props.put(Constants.SERVICE_DESCRIPTION, "Apache Sling Installer Support for subsystem-base files");
         props.put(Constants.SERVICE_VENDOR, "The Apache Software Foundation");
-        this.serviceReg = context.registerService(ResourceTransformer.class,
-                new SubsystemBaseTransformer(slingSettings), props);
+        this.serviceReg =
+                context.registerService(ResourceTransformer.class, new SubsystemBaseTransformer(slingSettings), props);
     }
 
     private void unregisterInstaller() {
-        if ( serviceReg != null ) {
+        if (serviceReg != null) {
             serviceReg.unregister();
             serviceReg = null;
         }

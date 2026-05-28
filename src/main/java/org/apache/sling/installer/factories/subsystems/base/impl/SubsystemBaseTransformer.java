@@ -67,8 +67,8 @@ public class SubsystemBaseTransformer implements ResourceTransformer {
 
     public TransformationResult[] transform(RegisteredResource resource) {
         // TODO start level of the subsystem
-        if ( resource.getType().equals(InstallableResource.TYPE_FILE) ) {
-            if ( resource.getURL().endsWith("." + TYPE_SUBSYSTEM_BASE) ) {
+        if (resource.getType().equals(InstallableResource.TYPE_FILE)) {
+            if (resource.getURL().endsWith("." + TYPE_SUBSYSTEM_BASE)) {
                 logger.info("Found subsystem-base resource {}", resource);
 
                 try {
@@ -82,8 +82,12 @@ public class SubsystemBaseTransformer implements ResourceTransformer {
                     tr.setInputStream(new DeleteOnCloseFileInputStream(ssd.file));
 
                     Map<String, Object> attr = new HashMap<String, Object>();
-                    attr.put(SubsystemConstants.SUBSYSTEM_SYMBOLICNAME, mfAttributes.getValue(SubsystemConstants.SUBSYSTEM_SYMBOLICNAME));
-                    attr.put(SubsystemConstants.SUBSYSTEM_VERSION, mfAttributes.getValue(SubsystemConstants.SUBSYSTEM_VERSION));
+                    attr.put(
+                            SubsystemConstants.SUBSYSTEM_SYMBOLICNAME,
+                            mfAttributes.getValue(SubsystemConstants.SUBSYSTEM_SYMBOLICNAME));
+                    attr.put(
+                            SubsystemConstants.SUBSYSTEM_VERSION,
+                            mfAttributes.getValue(SubsystemConstants.SUBSYSTEM_VERSION));
                     tr.setAttributes(attr);
 
                     return new TransformationResult[] {tr};
@@ -107,7 +111,7 @@ public class SubsystemBaseTransformer implements ResourceTransformer {
             data.file = zf;
             try (ZipOutputStream zos = new ZipOutputStream(new FileOutputStream(zf))) {
                 ZipEntry zie = null;
-                while((zie = jis.getNextEntry()) != null) {
+                while ((zie = jis.getNextEntry()) != null) {
                     String zieName = zie.getName();
                     if ("SUBSYSTEM-MANIFEST-BASE.MF".equals(zieName)) {
                         data.manifest = new Manifest(jis);
@@ -118,7 +122,9 @@ public class SubsystemBaseTransformer implements ResourceTransformer {
                     }
                 }
 
-                data.manifest.getMainAttributes().putValue(SubsystemConstants.SUBSYSTEM_CONTENT, subsystemContent.toString());
+                data.manifest
+                        .getMainAttributes()
+                        .putValue(SubsystemConstants.SUBSYSTEM_CONTENT, subsystemContent.toString());
                 ZipEntry zoe = new ZipEntry("OSGI-INF/SUBSYSTEM.MF");
                 try {
                     zos.putNextEntry(zoe);
@@ -149,18 +155,17 @@ public class SubsystemBaseTransformer implements ResourceTransformer {
         List<String> res = new ArrayList<>();
 
         String val = attrs.getValue(key);
-        if (val == null)
-            return Collections.emptyList();
+        if (val == null) return Collections.emptyList();
 
         for (String r : val.split("[|]")) {
-            if (r.length() > 0)
-                res.add(r);
+            if (r.length() > 0) res.add(r);
         }
         return res;
     }
 
-    private void handleSubsystemArtifact(String artifactName, ZipInputStream zis, ZipOutputStream zos,
-            StringBuilder subsystemContent) throws IOException {
+    private void handleSubsystemArtifact(
+            String artifactName, ZipInputStream zis, ZipOutputStream zos, StringBuilder subsystemContent)
+            throws IOException {
         int idx = artifactName.indexOf('/');
         int idx2 = artifactName.lastIndexOf('/');
         if (idx != idx2 || idx == 0)
@@ -178,13 +183,12 @@ public class SubsystemBaseTransformer implements ResourceTransformer {
                 Attributes ma = jf.getManifest().getMainAttributes();
                 String bsn = ma.getValue(Constants.BUNDLE_SYMBOLICNAME);
                 String version = ma.getValue(Constants.BUNDLE_VERSION);
-                if (version == null)
-                    version = "0";
-                String type = ma.getValue(Constants.FRAGMENT_HOST) != null ?
-                        IdentityNamespace.TYPE_FRAGMENT : IdentityNamespace.TYPE_BUNDLE;
+                if (version == null) version = "0";
+                String type = ma.getValue(Constants.FRAGMENT_HOST) != null
+                        ? IdentityNamespace.TYPE_FRAGMENT
+                        : IdentityNamespace.TYPE_BUNDLE;
                 if (bsn != null) {
-                    if (subsystemContent.length() > 0)
-                        subsystemContent.append(',');
+                    if (subsystemContent.length() > 0) subsystemContent.append(',');
 
                     subsystemContent.append(bsn);
                     subsystemContent.append(';');
